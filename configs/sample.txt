@@ -1,0 +1,33 @@
+file_name = SUB1_MPI_BIB_AB_exercises
+
+imu_filt_start = 2.0
+vel_thresh = 0.5
+refined = False
+moveZ = 0
+
+z_sit_min = 0.18
+z_sit_max = 0.0
+
+normal_thresh = 0.99
+
+valid_vel_thresh = 10000
+comp_factor2 = 0.99
+comp_factor = 1.01
+percent = 0.05
+
+wt_ft_vel = 500
+wt_ft_cont = 300
+wt_st_cont = 100
+wt_st_vel = 10
+wt_pen = 10
+trans_imu_smth = 500
+smooth_glob = 100
+head_orientation = 10
+
+init_rot_weight = 400
+init_trans_weight = 400
+
+iterations = 2000
+learn_rate = 0.001
+
+start = 0
