@@ -1,4 +1,12 @@
 # Human POSEitioning System (HPS): 3D Human Pose Estimation and Self-localization in Large Scenes from Body-Mounted Sensors
+>[Human POSEitioning System (HPS): 3D Human Pose Estimation and Self-localization in Large Scenes from Body-Mounted Sensors](https://arxiv.org/abs/2103.17265)  
+[Vladimir Guzov*](https://virtualhumans.mpi-inf.mpg.de/people/guzov.html), [Aymen Mir*](https://virtualhumans.mpi-inf.mpg.de/people/Mir.html), [Torsten Sattler](https://tsattler.github.io/)  , [Gerard Pons-Moll](https://virtualhumans.mpi-inf.mpg.de/people/pons-moll.html)  
+*Proceedings of IEEE Conference on Computer Vision and Pattern Recognition 2021*
+
+>(* joint first authors with equal contribution)
+
+
+
 ![HPS](imgs/teaser.png)
 
  HPS jointly estimates the full 3D human pose and location of a subject within large 3D scenes, using only
