@@ -1,14 +1,13 @@
-
 '''
 read the orientation matrix files.
 read init and actual init files -
 find the nearest index in the valid indices to every invalid index
 '''
 import sys
+import numpy as np
 
 sys.path.append("../")
 from global_vars import *
-
 
 class VelInit():
     def __init__(self, gamma=6, valid_vel_thresh=1000, comp_factor=1.02, comp_factor2 = 0.98, type='mean', percent = 0.2):
@@ -69,6 +68,13 @@ class VelInit():
         return av_vel
 
     def get_vel_thresh(self, cam_trans, imu_trans):
+        '''
+        Defines a custom velocity threshold for valid frames
+        :param cam_trans:
+        :param imu_trans:
+        :return:
+        '''
+
         all_mags = []
         for i in range(cam_trans.shape[0]):
             imu_vel = self.get_av_velocity(imu_trans, i)
@@ -79,6 +85,7 @@ class VelInit():
 
             if cam_vel_mag <= self.comp_factor * imu_vel_mag:
                 all_mags.append(cam_vel_mag)
+
         print('Length velocities over threshold {}'.format(len(all_mags)))
         p = (self.percent * cam_trans.shape[0]) / len(all_mags)
         p = max(100 - p * 100, 0)
@@ -105,17 +112,11 @@ class VelInit():
                 self.matrices[i, :, :] = rot_mat(imu_vel, cam_vel)
                 self.valid_matrix_indices.append(i)
 
-    def get_nearest_valid(self, index, valid_indices):
-        array = np.asarray(valid_indices)
-        idx = (np.abs(array - index)).argmin()
-        return array[idx]
-
     def get_closest_prev_valid(self, index, valid_indices):
         array = np.asarray(valid_indices)
         max_val = np.max(array)
         array2 = array - index
         array2[array2 > 0] = max_val + 1
-
         array2 = np.abs(array2)
 
         id = array2.argmin()
@@ -124,7 +125,6 @@ class VelInit():
     def run(self, pose, imu_trans, cam_trans):
 
         self.imu_trans, self.pose = imu_trans, pose
-
         self.trans = cam_trans
 
         self.end_index = self.trans.shape[0]
@@ -135,16 +135,11 @@ class VelInit():
 
         self.get_matrices(cam_trans=self.trans, imu_trans=self.imu_trans)
 
-        # print(valid_indices)
-        # self.new_poses2 = np.copy(self.pose)
         print('Length of final valid velocites after passing all tests', len(self.valid_matrix_indices))
 
         for i in range(self.trans.shape[0]):
             nearest_index = self.get_closest_prev_valid(i, self.valid_matrix_indices)
-            # print('  {} nearest {}'.format(i, nearest_index))
-            # print(self.pose[i])
             self.pose[i] = multiply_pose(self.pose[i], self.matrices[nearest_index])
-            # print(self.new_poses2[i])
 
         nearest_mult_dict = {
             'transes': self.trans,
@@ -152,23 +147,3 @@ class VelInit():
         }
 
         return nearest_mult_dict
-
-if __name__ == "__main__":
-
-    '''
-    # 
-    # valid-vel_thresh == 1000 when you get the top forty percentile
-    # '''
-    # all_files = get_all_file_names()
-    #
-    # for file in all_files:
-    #     solver = Solver(gamma=10, valid_vel_thresh=1000, comp_factor=1, type='mean')
-    #
-    #     try:
-    #         file_name = "/BS/aymen/static00/DATA_CVPR21/Vis_and_test/cam_orient_correct2/pose_traj_files/{}/" \
-    #                     "optimize/filt_strt-2.0_vel_filt_th-0.5_filt_fact-1000_repcamz-True_cortype-xy/{}_refined_not.pkl".format(
-    #             file, file)
-    #         solver.run(file_name=file, file_path=file_name)
-    #     except:
-    #         print("-==================--")
-    #         print('does not exist')

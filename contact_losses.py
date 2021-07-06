@@ -1,3 +1,7 @@
+"""
+Contact Losses
+"""
+
 import torch
 import ChamferDistancePytorch.chamfer3D.dist_chamfer_3D as cham
 import numpy as np

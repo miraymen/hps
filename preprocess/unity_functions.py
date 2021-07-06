@@ -1,22 +1,27 @@
-##conda activate renderer_new
-# any python 3 environment
+"""
+    Utility functions for transforming text files to pkl files
+"""
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 import math
-import json
-import pickle
-import argparse
+
 
 def get_string(number):
     return "%05d" % number
 
 def flip(new_verts):
+    """
+    Flip vertices along
+    Args
+        :param new_verts:
+    Return:
+    """
     new_verts_store = new_verts.copy()
     new_verts.flags.writeable = True
 
-    new_verts[:, 0] = - new_verts[:, 0]
+    new_verts[:, 0] = -new_verts[:, 0]
     new_verts[:, 1] = -new_verts_store[:, 2]
-    new_verts[:, 2] =  new_verts_store[:, 1]
+    new_verts[:, 2] = new_verts_store[:, 1]
 
     return new_verts
 
@@ -37,14 +42,13 @@ def rotation_mat(thetas):
                       [-math.sin(thetas[2]), math.cos(thetas[2]), 0],
                       [0, 0, 1]])
 
-    return R.from_dcm(np.matmul(y_rot, np.matmul(x_rot, z_rot))).as_rotvec()
+    return R.from_matrix(np.matmul(y_rot, np.matmul(x_rot, z_rot))).as_rotvec()
 
 
 def process_smpl_trans(trans_path):
     """
     code for processing smpl pose extracted from unity
     """
-    import numpy as np
     with open(trans_path, 'rb') as file:
         lines = file.readlines()
     file.close()
@@ -61,7 +65,6 @@ def process_smpl_pose(pose_path):
     """
     code for processing smpl pose extracted from unity
     """
-    import numpy as np
     reorder_indices = [0, 1, 5, 9, 2, 6, 10, 3, 7, 11, 4, 8, 17,
                        12, 19, 18, 13, 20, 14, 21, 15, 22, 16, 23]
     with open(pose_path, 'rb') as file:

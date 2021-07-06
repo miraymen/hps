@@ -1,3 +1,10 @@
+"""
+Gets all the frames which involve sitting.
+
+Requires: bake files
+"""
+import sys
+sys.path.append("../")
 from global_vars import  *
 from smplpytorch.pytorch.smpl_layer import SMPL_Layer
 import torch
@@ -7,9 +14,12 @@ import numpy as np
 all_names = get_all_file_names()
 
 for file in all_names:
+    try:
+        _, _ , imu_trans, imu_pose = sync_data(file, 'bake')
+    except:
+        continue
 
-    _, _ , imu_trans, imu_pose = sync_data(file, 'bake')
-
+    print("Processing: {}".format(file))
     person = person_from_file(file)
 
     data = data_from_person(person)
@@ -50,12 +60,12 @@ for file in all_names:
 
     save_arr = np.zeros(imu_trans.shape[0])
     save_arr[valid_inds] = 1
+
     save_dict = {
         'sit_contacts': save_arr.tolist()
     }
 
-    print(valid_inds)
-    print('{}of{}'.format(len(valid_inds), imu_pose.shape[0]))
+    print('Number of sitting frames: {} of {}'.format(len(valid_inds), imu_pose.shape[0]))
 
     os.makedirs(SIT_PATH, exist_ok=True)
     save_file = SIT_PATH + file + '.json'

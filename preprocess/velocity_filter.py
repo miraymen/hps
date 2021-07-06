@@ -1,3 +1,7 @@
+"""
+Filters the camera localization files based on Camera Velocites
+"""
+
 import numpy as np
 import json
 import pickle
@@ -98,7 +102,6 @@ def velocity_filter(path_dict, velocity_thresh = 0.01):
                     invalid_indices.append(ind)
         new_path_dict[names[ind]] = frame
 
-    print("Number of frames which end up with none without fault: ", nones)
     return new_path_dict, np.array(vels), invalid_indices
 
 def get_string(number):

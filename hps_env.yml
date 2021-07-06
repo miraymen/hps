@@ -1,12 +1,12 @@
-name: py3d
+name: hps_env
 channels:
   - conda-forge
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=main
   - blas=1.0=mkl
-  - ca-certificates=2021.1.19=h06a4308_0
-  - certifi=2020.12.5=py36h06a4308_0
+  - ca-certificates=2021.5.25=h06a4308_1
+  - certifi=2021.5.30=py36h06a4308_0
   - cudatoolkit=9.2=0
   - cudnn=7.6.5=cuda9.2_0
   - freetype=2.9.1=h8a8886c_1
@@ -29,7 +29,7 @@ dependencies:
   - ninja=1.9.0=py36hfd86e86_0
   - numpy-base=1.19.2=py36hfa32c7d_0
   - olefile=0.46=py36_0
-  - openssl=1.1.1i=h27cfd23_0
+  - openssl=1.1.1k=h27cfd23_0
   - pip=20.0.2=py36_3
   - protobuf=3.11.4=py36h831f99a_1
   - pycparser=2.20=py_2
@@ -66,7 +66,6 @@ dependencies:
     - chumpy==0.69
     - click==7.1.2
     - configargparse==1.4
-    - configer==1.4.1
     - configparser==5.0.1
     - coverage==5.1
     - cycler==0.10.0
@@ -89,7 +88,6 @@ dependencies:
     - googledrivedownloader==0.4
     - grpcio==1.30.0
     - h5py==2.10.0
-    - human-body-prior==0.9.3.0
     - idna==2.9
     - imagecodecs==2020.2.18
     - imageio==2.8.0
@@ -119,8 +117,6 @@ dependencies:
     - markupsafe==2.0.0a1
     - matplotlib==2.2.5
     - mccabe==0.6.1
-    - mesh-intersection==0.1.0
-    - mesh-to-sdf==0.0.12
     - mistune==0.8.4
     - more-itertools==8.2.0
     - moviepy==1.0.3
@@ -132,8 +128,7 @@ dependencies:
     - numba==0.51.2
     - numpy==1.18.4
     - oauthlib==3.1.0
-    - open3d==0.11.0
-    - open3d-python==0.7.0.0
+    - open3d==0.10.0.0
     - opencv-python==4.2.0.34
     - opt-einsum==3.2.1
     - packaging==20.3
@@ -151,7 +146,6 @@ dependencies:
     - proglog==0.1.9
     - prometheus-client==0.8.0
     - prompt-toolkit==3.0.5
-    - psbody-mesh==0.3
     - ptyprocess==0.6.0
     - py==1.8.1
     - pyasn1==0.4.8
@@ -187,7 +181,6 @@ dependencies:
     - sets==0.3.2
     - setuptools==46.3.0
     - shapely==1.7.0
-    - smplx==0.1.24
     - snowballstemmer==2.0.0
     - soundfile==0.10.3.post1
     - sphinx==2.2.0
@@ -207,11 +200,7 @@ dependencies:
     - testpath==0.4.4
     - threadpoolctl==2.0.0
     - tifffile==2020.5.11
-    - torch-cluster==1.5.8
     - torch-geometric==1.6.3
-    - torch-scatter==2.0.5
-    - torch-sparse==0.6.8
-    - torch-spline-conv==1.2.0
     - torchgeometry==0.1.2
     - tornado==6.0.4
     - tqdm==4.46.0
@@ -228,5 +217,4 @@ dependencies:
     - wrapt==1.12.1
     - yacs==0.1.7
     - zipp==3.1.0
-prefix: /BS/composition_gan/nobackup/anaconda/envs/py3d
 

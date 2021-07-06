@@ -1,6 +1,7 @@
 '''
-Code to filter out the
+Code to filter out the incorrect localization results
 '''
+
 import argparse
 import sys
 import numpy as np

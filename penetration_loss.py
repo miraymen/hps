@@ -1,10 +1,14 @@
+"""
+Defines the penetration loss
+"""
+
 import torch
 import torch.nn.functional as F
 import trimesh
 import numpy as np
 import os
 from scipy.spatial import cKDTree as KDTree
-import torch.functional as F
+# import torch.functional as F
 import json
 
 
@@ -127,10 +131,5 @@ def pen_constraint(verts, faces_batch, tens_occ, mean_trans, radius, vis = False
 
             trimesh.points.PointCloud(vertices=save_pts_np, colors=colors).export(
                 './in_pts.ply')
-
-        # pt_cld = pt_clds[i
-        # colors = np.zeros(pt_clds.shape)
-
-
 
     return loss

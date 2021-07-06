@@ -1,15 +1,18 @@
-#conda activate open3d_new1_
+"""
+Compute Scene normals
+"""
 import trimesh
 import os
 import numpy as np
 import open3d as o3d
 
+import sys
+sys.path.append("../")
 from global_vars import *
 
 if __name__ == "__main__":
 
     scenes = ["MPI_EG",
-              "MPI_AUSTREP_SEND",
               "MPI_Etage6",
               "MPI_BIBLIO_UG",
               "MPI_BIBLIO_OG",
@@ -24,9 +27,10 @@ if __name__ == "__main__":
     for norm_param in normals_params:
         for scene in scenes:
 
+            print('Processing Scene: {} with Parameter: {}'.format(scene, norm_param))
             normal_path = SCENE_PATH + '{}/10M_flat_vert{}.npy'.format(scene, norm_param)
             vis_flat_verts_path = SCENE_PATH + '{}/vis_pt_cld{}.ply'.format(scene, norm_param)
-            cln_path = SCENE_PATH + 'clean_scenes/{}/10M_clean.ply'.format(scene)
+            cln_path = SCENE_PATH + '/{}/10M_clean.ply'.format(scene)
 
             try:
                 inp_pcd = trimesh.load(cln_path)

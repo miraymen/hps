@@ -2,11 +2,8 @@
 Transform IMU trajectories by finding the orientation correction
 Plug this imu trajectory into the camera localization trajectory
 Read the unfiltered json files
-Run velocity filter to get valid frames
-Do not interpolate yet
-Rotate IMU positions
 
-conda :py3d
+conda :hps_env
 
 Requires:
 1. bake file
@@ -37,14 +34,9 @@ class Solver:
                                                                                               )
 
         self.velocity_threshold = velocity_threshold
-
-
         self.replace_cam_z = replace_cam_z
-
         self.cor_type = cor_type
-
         self.imu_filt_fact_strt = imu_filt_fact_strt
-
         self.refine = refine
 
     def ranges(self, nums):
@@ -77,9 +69,7 @@ class Solver:
     def refine_vals(self):
 
         ranges_numbers = self.ranges(self.invalid_indices)
-
         rot_trans = np.identity(3)
-
         for i, one_range in enumerate(ranges_numbers):
             # print(i)
             start = one_range[0] - 1
@@ -115,9 +105,9 @@ class Solver:
         """
         self.file_name = file_name
 
-        self.traj_path = FILTER_PATH + 'trajectories_new/' + file_name + '/' + self.params + '/'
+        self.traj_path = FILTER_PATH + 'trajectories/' + file_name + '/' + self.params + '/'
 
-        self.pose_traj_path = FILTER_PATH + 'pose_traj_files_new/' + file_name + '/' + self.params + '/'
+        self.pose_traj_path = FILTER_PATH + 'pose_traj_files/' + file_name + '/' + self.params + '/'
 
         os.makedirs(self.traj_path, exist_ok=True)
         os.makedirs(self.pose_traj_path, exist_ok=True)
@@ -125,15 +115,10 @@ class Solver:
         self.cam_trans, self.cam_pose, self.imu_trans, self.imu_pose = sync_data(file_name, type='bake')
 
         self.imu_pose_new = np.copy(self.imu_pose)
-
         self.end_index = self.cam_trans.shape[0]
-
         self.imu_vel = compute_velocity(self.imu_trans)
-
         big_iter = 1
-
         self.invalid_indices = []
-
         self.max_vel = 100
 
         # ==========================
@@ -159,11 +144,9 @@ class Solver:
                                                                                            self.cam_trans)
 
             self.invalid_indices = np.union1d(self.invalid_indices, self.invalid_indices_iter).astype(int)
-
             self.valid_indices = list(set(range(0, self.end_index)) - set(self.invalid_indices))
 
             print('Invalid indices: {}/{} '.format(len(self.invalid_indices), self.end_index))
-
             print('Current iter invalid : {}'.format(len(self.invalid_indices_iter)))
 
             # If the first index is filtered out, use IMU data straightaway
@@ -242,8 +225,7 @@ class Solver:
                 self.traj_path + '/final_refine.ply'.format(big_iter))
 
     def run_all(self):
-        all_file_names = os.listdir(CAM_PATH)
-        all_file_names.sort()
+        all_file_names = get_all_file_names()
         for file in all_file_names:
             print("============================")
             print(file)
@@ -260,20 +242,12 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-
-    parser.add_argument("--file_name", default="SUB7_MPI_BIB_OG_long", help = "sequenc ename")
-
+    parser.add_argument("--file_name", default="SUB4_MPI_Etage6_working_standing", help = "sequence name")
     parser.add_argument("--gamma", default=100, help="the jump to be used for computing ")
-
-    parser.add_argument("--velocity_threshold", type=float, default=3.0, help="max velocity allowed in metres/frame")
-
-    parser.add_argument("--imu_filt_fact_strt", type=float, default=10.0, help="imu filter factor start, only active when"
-                                                                               " - i.e what comparitive factor defines a valid velocity ")
-
+    parser.add_argument("--velocity_threshold", type=float, default=1.0, help="max velocity allowed in metres/frame")
+    parser.add_argument("--imu_filt_fact_strt", type=float, default=10.0, help="imu filter factor start, - i.e what comparitive factor defines a valid velocity ")
     parser.add_argument("--replace_cam_z", type=str2bool, default=True, help="replace z value with imu z values")
-
     parser.add_argument("--cor_type", type=str, default="xy", help="xy | xyz")
-
     parser.add_argument("--refine", type=str2bool, default=False, help="scale the vectors or not")
 
     args = parser.parse_args()
